@@ -84,7 +84,7 @@ const UserName: React.FC = () => {
   const checkUsernameValidity = debounce(async (value: string) => {
     try {
       setIsLoading(true)
-      const res = await fetch(``)
+      const res = await fetch(`${profileApiUrl}/api/users/valid/${value}`)
 
       if (res.ok) {
         setIsValid(true)
@@ -111,9 +111,6 @@ const UserName: React.FC = () => {
 
       const signature = library?.bnbSign
         ? (await library.bnbSign(account, userName))?.signature
-        // https://web3js.readthedocs.io/en/v1.2.11/web3-eth-personal.html#id17
-        // web3.utils.utf8ToHex("...") will not be called here on username if numeric like string
-        // https://github.com/ChainSafe/web3.js/blob/5d027191c5cb7ffbcd44083528bdab19b4e14744/packages/web3-core-helpers/src/formatters.js#L225
         : await web3.eth.personal.sign(userName, account, null) // Last param is the password, and is null to request a signature in the wallet
 
       const response = await fetch(``, {
