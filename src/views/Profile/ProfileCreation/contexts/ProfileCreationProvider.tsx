@@ -16,7 +16,7 @@ const initialState: State = {
     nftAddress: null,
     tokenId: null,
   },
-  userName: '',
+  userName: '0x41414141',
   minimumCakeRequired: new BigNumber(totalCost).multipliedBy(new BigNumber(10).pow(18)),
   allowance: new BigNumber(allowance).multipliedBy(new BigNumber(10).pow(18)),
 }

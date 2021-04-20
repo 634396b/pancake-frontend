@@ -64,7 +64,7 @@ const UserName: React.FC = () => {
   const { toastError } = useToast()
   const web3 = useWeb3()
   const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE)
-  const [isValid, setIsValid] = useState(false)
+  const [isValid, setIsValid] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeToRegister)
@@ -84,7 +84,7 @@ const UserName: React.FC = () => {
   const checkUsernameValidity = debounce(async (value: string) => {
     try {
       setIsLoading(true)
-      const res = await fetch(`${profileApiUrl}/api/users/valid/${value}`)
+      const res = await fetch(``)
 
       if (res.ok) {
         setIsValid(true)
@@ -111,9 +111,12 @@ const UserName: React.FC = () => {
 
       const signature = library?.bnbSign
         ? (await library.bnbSign(account, userName))?.signature
+        // https://web3js.readthedocs.io/en/v1.2.11/web3-eth-personal.html#id17
+        // web3.utils.utf8ToHex("...") will not be called here on username if numeric like string
+        // https://github.com/ChainSafe/web3.js/blob/5d027191c5cb7ffbcd44083528bdab19b4e14744/packages/web3-core-helpers/src/formatters.js#L225
         : await web3.eth.personal.sign(userName, account, null) // Last param is the password, and is null to request a signature in the wallet
 
-      const response = await fetch(`${profileApiUrl}/api/users/register`, {
+      const response = await fetch(``, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

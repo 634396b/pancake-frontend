@@ -15,6 +15,9 @@ const Steps = () => {
     return <NoWalletConnected />
   }
 
+  return <UserName />
+
+
   if (!isInitialized) {
     return <div>Loading...</div>
   }
